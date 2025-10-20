@@ -172,7 +172,3 @@ Observação sobre versionamento: todas as rotas expostas sob **/api/v1**.
   - GET /api/v1/tasks?page=1&limit=10&status=pending
 
 ---
-
----
-
-Fim do README. Copie e cole este conteúdo no arquivo README.md do repositório e atualize campos de equipe, exemplos e variáveis de ambiente conforme a implementação.
