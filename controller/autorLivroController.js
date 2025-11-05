@@ -1,0 +1,86 @@
+const mongoose = require('mongoose');
+const Autor = require('../models/autorModel');
+
+// POST - cria um autor >necessário autentificação<
+async function adicionarAutor(req,res){
+    try{
+        const novoAutor = await Autor.create({
+            nome: req.body.nome,
+            idade: req.body.idade,
+            nacionalidade: req.body.nacionalidade
+        });
+        return res.status(201).json(novoAutor);
+    }catch (err) {
+        if (err.name === 'ValidationError') {
+          const mensagens = Object.values(err.errors).map(e => e.message);
+          return res.status(422).json({ msg: mensagens });
+        }
+        return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+}
+
+// PUT/:id - edita um autor >necessário autentificação<
+async function editarAutor(req,res){
+    const { id } = req.params;
+    try{
+        const autorAtualizado = await Autor.findOneAndUpdate(
+            {
+                _id:id
+            },
+            {
+                nome: req.body.nome,
+                idade: req.body.idade,
+                nacionalidade: req.body.nacionalidade
+            },
+            {
+                runValidators: true, 
+                new:true
+            }
+        )
+        return res.status(200).json(autorAtualizado);        
+    }catch (err) {
+        if (err.name === 'ValidationError') {
+          const mensagens = Object.values(err.errors).map(e => e.message);
+          return res.status(422).json({ msg: mensagens });
+        }
+        return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+}
+
+// GET - recebe todos os autores
+async function listarAutores(req,res){
+    autoresListados = await Autor.find({});
+    return res.status(200).json(autoresListados);
+}
+
+// GET/:id - recebe os dados do autor e seus livros registrados
+async function buscarAutor(req,res,next){
+    const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({msg:"Parâmetro inválido"});
+
+    autorEncontrado = await Autor.findOne({_id:id});
+    if(autorEncontrado) {
+        req.autor = autorEncontrado;
+        return next();
+    }else return res.status(404).json({msg:"Autor não encontrado"});
+}
+
+async function exibirAutor(req,res){
+    return res.status(200).json(req.autor);
+}
+
+// DELETE - deleta e o autor, mas primeiro retira o seu registro dos livros >necessário autentificação<
+async function deletarAutor(req,res){
+    const { id } = req.params;
+    try{
+        if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ msg: "Parâmetro inválido" });
+        const livrosAlterados = await Livro.updateMany({ autor: id }, { $set: { autor: null } });
+        const autorRemovido = await Autor.findOneAndDelete({_id: id});
+        return res.status(204).json({});
+    }catch (err) {
+        return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
+
+}
+
+module.exports = { adicionarAutor, editarAutor, listarAutores, buscarAutor, exibirAutor, deletarAutor};
