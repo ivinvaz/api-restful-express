@@ -4,7 +4,6 @@ const Autor = require('../models/autorModel');
 const Categoria = require('../models/categoriaModel');
 const Estoque = require('../models/estoqueModel');
 
-// POST - cria um livro >necessário autentificação< 
 async function adicionarLivro(req,res){
     try{
         let autorEncontrado = null;
@@ -33,9 +32,9 @@ async function adicionarLivro(req,res){
     }
 }
 
-// PUT/:id - edita um livro >necessário autentificação< 
 async function editarLivro(req,res){
     const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({msg:"Parâmetro inválido"});
     try{
         let autorEncontrado = null;
         let categoriaEncontrada = null;
@@ -72,13 +71,15 @@ async function editarLivro(req,res){
     }
 }
 
-// GET - recebe todos os livros
 async function listarLivros(req,res){
-    const livros = await Livro.find({}).populate('autor').populate('categoria');
-    return res.status(200).json(livros);
+    try{
+        const livros = await Livro.find({}).populate('autor').populate('categoria');
+        return res.status(200).json(livros);    
+    }catch(err){
+        return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
 }
 
-// GET/:id - recebe os dados do livro
 async function buscarLivro(req,res,next){
     const { id } = req.params;
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({msg:"Parâmetro inválido"});
@@ -96,13 +97,17 @@ async function exibirLivro(req,res){
     return res.status(200).json(req.livro);
 }
 
-// DELETE - deleta o livro, mas primeiro retira o seu registro da tabela estoque >necessário autentificação<
 async function deletarLivro(req,res){
     const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({msg:"Parâmetro inválido"});
 
-    const estoquesDeletados = await Estoque.deleteMany({ livro: id });
-    const livroDeletado = await Livro.findOneAndDelete({_id:id});
-    return res.status(204).json({});
+    try{
+        const estoquesDeletados = await Estoque.deleteMany({ livro: id });
+        const livroDeletado = await Livro.findOneAndDelete({_id:id});
+        return res.status(204).json({});
+    }catch(err){
+        return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
 }
 
 module.exports = { adicionarLivro, editarLivro, listarLivros, buscarLivro, exibirLivro, deletarLivro};
