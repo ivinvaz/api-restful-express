@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
         trim: true
     },
     paginas: {
-        type: Integer, 
+        type: Number, 
         required: [true,"Quantidade de páginas do livro é obrigatorio"], 
     },
     autor: {
