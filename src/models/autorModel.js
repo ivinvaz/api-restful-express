@@ -9,6 +9,10 @@ const schema = new mongoose.Schema({
   idade: {
     type: Number,
     required: [true, "Idade do autor é obrigatória"],
+    validate: {
+      validator: v => typeof v === 'number',
+      message: props => 'Idade não é um número válido'
+    }
   },
   nacionalidade: {
     type: String,
