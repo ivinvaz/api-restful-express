@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Categoria = require('../models/categoriaModel');
 const Livro = require('../models/livroModel');
 
-// POST - cria uma categoria >necessário autentificação<
 async function adicionarCategoria(req,res){
     try{
         const novaCategoria = await Categoria.create({
@@ -18,9 +17,9 @@ async function adicionarCategoria(req,res){
     }
 }
 
-// PUT/:id - edita uma categoria >necessário autentificação<
 async function editarCategoria(req,res){
     const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({msg:"Parâmetro inválido"});
     try{
         const categoriaAtualizada = await Categoria.findOneAndUpdate(
             {_id:id},
@@ -42,13 +41,15 @@ async function editarCategoria(req,res){
     }
 }
 
-// GET - recebe todos as categorias  
 async function listarCategorias(req,res){
-    const categorias = await Categoria.find({});
-    return res.status(200).json(categorias);
+    try{
+        const categorias = await Categoria.find({});
+        return res.status(200).json(categorias);
+    }catch (err) {
+        return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
 }
 
-// GET/:id - recebe os dados da categoria e seus livros registrados  
 async function buscarCategoria(req,res,next){
     const { id } = req.params;
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({msg:"Parâmetro inválido"});
@@ -64,7 +65,6 @@ async function exibirCategoria(req,res){
     return res.status(200).json(req.categoria);
 }
 
-// DELETE - deleta a categoria, mas primeiro retira o seu registro dos livros >necessário autentificação<
 async function deletarCategoria(req,res){
     const { id } = req.params;
     try{
