@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Tamanho = require('../models/tamanhoModel');
 const Estoque = require('../models/estoqueModel');
 
-// POST - cria um tamanho >necessário autentificação<  
 async function adicionarTamanho(req,res){
     try{
         const novoTamanho = await Tamanho.create({
@@ -18,9 +17,9 @@ async function adicionarTamanho(req,res){
     }
 }
 
-// PUT/:id - edita um tamanho >necessário autentificação<  
 async function editarTamanho(req,res){
     const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({msg:"Parâmetro inválido"});
     try{
         const tamanhoAtualizado = await Tamanho.findOneAndUpdate(
             {
@@ -44,13 +43,15 @@ async function editarTamanho(req,res){
     }
 }
 
-// GET - recebe todos os tamanhos 
 async function listarTamanhos(req,res){
-    const tamanhosListados = await Tamanho.find({});
-    return res.status(200).json(tamanhosListados);
+    try{
+        const tamanhosListados = await Tamanho.find({});
+        return res.status(200).json(tamanhosListados);    
+    }catch (err) {
+        return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
 }
 
-// GET/:id - recebe os dados do tamanho e seus livros registrados no estoque
 async function buscarTamanho(req,res,next){
     const { id } = req.params;
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({msg:"Parâmetro inválido"});
@@ -68,12 +69,11 @@ async function exibirTamanho(req,res){
     return res.status(200).json(req.tamanho);
 }
 
-// DELETE - deleta a categoria, mas primeiro retira o seu registro do estoque e impede o delete caso tenham itens em estoque >necessário autentificação< 
 async function deletarTamanho(req,res){
     const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({msg:"Parâmetro inválido"});
 
     try{
-        if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ msg: "Parâmetro inválido" });
         const EstoquesAlterados = await Estoque.updateMany({ tamanho: id }, { $set: { tamanho: null } });
         const tamanhoRemovido = await Tamanho.findOneAndDelete({_id:id});
         return res.status(204).json({});
