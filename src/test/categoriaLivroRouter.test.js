@@ -46,7 +46,7 @@ describe('Testes das rotas de categoria', ()=>{
         const resposta = await request.get(`${url}/000000000000000000000000`);
         expect(resposta.status).toBe(404);
         expect(resposta.headers['content-type']).toMatch(/json/);
-        expect(resposta.body.msg).toContain("Categoria não encontrado");
+        expect(resposta.body.msg).toContain("Categoria não encontrada");
     });
 
     test('GET:id:200', async ()=>{
@@ -69,7 +69,7 @@ describe('Testes das rotas de categoria', ()=>{
         });
         expect(resposta.status).toBe(404);
         expect(resposta.headers['content-type']).toMatch(/json/);
-        expect(resposta.body.msg).toContain("Categoria não encontrado");
+        expect(resposta.body.msg).toContain("Categoria não encontrada");
     });
 
     test('PUT:id:200', async()=>{
@@ -97,7 +97,7 @@ describe('Testes das rotas de categoria', ()=>{
         const resposta = await request.delete(`${url}/000000000000000000000000`)
         expect(resposta.status).toBe(404);
         expect(resposta.headers['content-type']).toMatch(/json/);
-        expect(resposta.body.msg).toContain("Categoria não encontrado");
+        expect(resposta.body.msg).toContain("Categoria não encontrada");
     });
 
     test('DELETE:id:200', async()=>{
@@ -109,6 +109,7 @@ describe('Testes das rotas de categoria', ()=>{
         const resposta = await request.get(`${url}/${id}`);
         expect(resposta.status).toBe(404);
         expect(resposta.headers['content-type']).toMatch(/json/);
-        expect(resposta.body.msg).toContain("Categoria não encontrado");
+        expect(resposta.body.msg).toContain("Categoria não encontrada");
     });
 });
+
