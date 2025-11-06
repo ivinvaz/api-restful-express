@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
     required: [true, "Livro é obrigatório"]
   },
   quantidade: {
-    type: Integer,
+    type: Number,
     required: [true, "Quantidade é obrigatória"],
   },
   tamanho: {
