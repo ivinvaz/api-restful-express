@@ -164,7 +164,7 @@ describe('Testes das rotas de livro', ()=>{
         expect(resposta.body.msg).toContain("Livro não encontrado");
     });
 
-    test('PUT:id:200 id não encontrado', async()=>{
+    test('PUT:id:200', async()=>{
         const resposta = await request.put(`${url}/${id}`).send({
             "nome":"Memorias do Brás",
             "paginas":34,
@@ -213,3 +213,4 @@ describe('Testes das rotas de livro', ()=>{
         expect(resposta.body.msg).toContain("Livro não encontrado");
     });
 });
+
