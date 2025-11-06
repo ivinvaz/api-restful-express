@@ -21,8 +21,10 @@ async function adicionarLivro(req,res){
             paginas: req.body.paginas,
             autor: autorEncontrado?._id,
             categoria: categoriaEncontrada?._id
-        })
-        return res.status(201).json(novoLivro);
+        });
+        const livroPopulado = await Livro.findById(novoLivro._id).populate('autor').populate('categoria');
+        return res.status(201).json(livroPopulado);
+
     }catch (err) {
         if (err.name === 'ValidationError') {
           const mensagens = Object.values(err.errors).map(e => e.message);
@@ -60,7 +62,7 @@ async function editarLivro(req,res){
                 runValidators: true, 
                 new:true   
             }
-        )
+        ).populate('autor').populate('categoria');
         return res.status(200).json(livroAtualizado);
     }catch (err) {
         if (err.name === 'ValidationError') {
