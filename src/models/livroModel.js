@@ -3,12 +3,16 @@ const mongoose = require('mongoose');
 const schema = new mongoose.Schema({
     nome: {
         type: String, 
-        required: [true,"Nome do livro é obrigatorio"], 
+        required: [true,"Nome do livro é obrigatório"], 
         trim: true
     },
     paginas: {
         type: Number, 
-        required: [true,"Quantidade de páginas do livro é obrigatorio"], 
+        required: [true,"Quantidade de páginas do livro é obrigatório"], 
+        validate: {
+            validator: v => typeof v === 'number',
+            message: props => 'Paginas não é um número válido'
+        }
     },
     autor: {
         type: mongoose.Schema.Types.ObjectId,
