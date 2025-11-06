@@ -12,3 +12,5 @@ router.get('/', tamanhoLivroController.listarTamanhos);
 router.get('/:id', tamanhoLivroController.buscarTamanho, tamanhoLivroController.exibirTamanho);
 
 router.delete('/:id', autentificacao.verificarTokenDeAutentificacao, tamanhoLivroController.buscarTamanho, tamanhoLivroController.deletarTamanho);
+
+module.exports = router;
