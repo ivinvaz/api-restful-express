@@ -106,7 +106,7 @@ describe('Testes das rotas de autor', ()=>{
         expect(resposta.body.msg).toContain("Autor não encontrado");
     });
 
-    test('PUT:id:200 id não encontrado', async()=>{
+    test('PUT:id:200', async()=>{
         const resposta = await request.put(`${url}/${id}`).send({
             "nome":"Axe Of Assis",
             "idade":34,
@@ -140,7 +140,7 @@ describe('Testes das rotas de autor', ()=>{
         expect(resposta.body.msg).toContain("Autor não encontrado");
     });
 
-    test('DELETE:id:200 id não encontrado', async()=>{
+    test('DELETE:id:200', async()=>{
         const resposta = await request.delete(`${url}/${id}`)
         expect(resposta.status).toBe(204);
     });
@@ -152,3 +152,4 @@ describe('Testes das rotas de autor', ()=>{
         expect(resposta.body.msg).toContain("Autor não encontrado");
     });
 });
+
