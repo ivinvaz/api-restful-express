@@ -12,3 +12,5 @@ router.get('/', estoqueLivroController.listarEstoque);
 router.get('/:id', estoqueLivroController.buscarEstoques, estoqueLivroController.exibirEstoque);
 
 router.delete('/:id', autentificacao.verificarTokenDeAutentificacao, estoqueLivroController.buscarEstoques, estoqueLivroController.deletarEstoque);
+
+module.exports = router;
