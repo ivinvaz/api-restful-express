@@ -12,3 +12,5 @@ router.get('/', livroController.listarLivros);
 router.get('/:id', livroController.buscarLivro, livroController.exibirLivro);
 
 router.delete('/:id', autentificacao.verificarTokenDeAutentificacao, livroController.buscarLivro, livroController.deletarLivro);
+
+module.exports = router;
