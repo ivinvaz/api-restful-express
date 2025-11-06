@@ -3,11 +3,14 @@ const jwt = require('jsonwebtoken');
 function verificarTokenDeAutentificacao(req,res,next){
     const authHeader = req.headers.authorization || req.headers.Authorization;
     if (!authHeader)  return res.status(401).json({ msg: 'Token ausente' });
-    
-    const { authorization } = req.headers;
-    try{    
-        const token = authorization.split(" ")[1];
-        const payload = jwt.verify(token, process.env.JWT_SEGREDO);
+    try{  
+        let payload = null;
+        if (authHeader.includes('Bearer ')) {
+            const token = authHeader.split(" ")[1];
+            payload = jwt.verify(token, process.env.JWT_SEGREDO);
+        } else {
+            payload = jwt.verify(authHeader, process.env.JWT_SEGREDO);
+        }
         req.payload = {
             iss: payload.iss,
             aud: payload.aud,
