@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
     trim: true
   },
   idade: {
-    type: Integer,
+    type: Number,
     required: [true, "Idade do autor é obrigatória"],
   },
   nacionalidade: {
