@@ -12,3 +12,5 @@ router.get('/', categoriaLivroController.listarCategorias);
 router.get('/:id', categoriaLivroController.buscarCategoria, categoriaLivroController.exibirCategoria);
 
 router.delete('/:id', autentificacao.verificarTokenDeAutentificacao, categoriaLivroController.buscarCategoria, categoriaLivroController.deletarCategoria);
+
+module.exports = router;
