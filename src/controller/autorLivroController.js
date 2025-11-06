@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Autor = require('../models/autorModel');
+const Livro = require('../models/livroModel');
 
-// POST - cria um autor >necessário autentificação<
 async function adicionarAutor(req,res){
     try{
         const novoAutor = await Autor.create({
@@ -19,9 +19,9 @@ async function adicionarAutor(req,res){
     }
 }
 
-// PUT/:id - edita um autor >necessário autentificação<
 async function editarAutor(req,res){
     const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({msg:"Parâmetro inválido"});
     try{
         const autorAtualizado = await Autor.findOneAndUpdate(
             {
@@ -47,13 +47,15 @@ async function editarAutor(req,res){
     }
 }
 
-// GET - recebe todos os autores
 async function listarAutores(req,res){
-    autoresListados = await Autor.find({});
-    return res.status(200).json(autoresListados);
+    try{
+        autoresListados = await Autor.find({});
+        return res.status(200).json(autoresListados);        
+    }catch(err){
+        return res.status(500).json({ msg: "Erro interno do servidor" });
+    }
 }
 
-// GET/:id - recebe os dados do autor e seus livros registrados
 async function buscarAutor(req,res,next){
     const { id } = req.params;
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({msg:"Parâmetro inválido"});
@@ -69,7 +71,6 @@ async function exibirAutor(req,res){
     return res.status(200).json(req.autor);
 }
 
-// DELETE - deleta e o autor, mas primeiro retira o seu registro dos livros >necessário autentificação<
 async function deletarAutor(req,res){
     const { id } = req.params;
     try{
