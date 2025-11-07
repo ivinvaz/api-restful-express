@@ -23,4 +23,4 @@ async function logarUsuario(req,res){
     }
 }
 
-module.exports = { logarUsuario};
+module.exports = { logarUsuario };

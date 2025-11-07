@@ -87,4 +87,4 @@ async function deletarUsuario(req,res){
     }
 }
 
-module.exports = { adicionarUsuario, editarUsuario, listarUsuarios, buscarUsuario, exibirUsuario, deletarUsuario, logarUsuario};
+module.exports = { adicionarUsuario, editarUsuario, listarUsuarios, buscarUsuario, exibirUsuario, deletarUsuario};
