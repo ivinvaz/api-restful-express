@@ -1,174 +1,161 @@
-# Project README
+# API RESTful de Livros
 
-Projeto: API Tasks  
-Descrição: API RESTful para gerenciamento de tarefas usando Express, MVC, MongoDB com Mongoose, autenticação JWT, validações, testes com Jest e Supertest e documentação via Swagger UI.
+Projeto backend de uma API RESTful desenvolvida com Node.js, Express e MongoDB para gerenciar usuários, autores, categorias, livros, tamanhos e estoques. Esta API foi criada com foco em rotas bem definidas e testes de integração usando Supertest + Jest.
 
----
-
-## Quick Start
-
-- Pré-requisitos
-  - **Node.js** >= 16
-  - **npm** ou **yarn**
-  - **MongoDB** local ou URI para MongoDB Atlas
-
-- Instalação
-  - clone o repositório
-  - instalar dependências
-    - npm install
-  - configurar variáveis de ambiente (ver seção Environment Variables)
-  - iniciar servidor em modo dev
-    - npm run dev
-  - abrir documentação
-    - acessar http://localhost:3000/api-docs
+## Sumário
+- Sobre
+- Tecnologias
+- Estrutura do projeto
+- Endpoints principais
+- Variáveis de ambiente
+- Instalação e execução
+- Rodando os testes (local e CI)
+- Recomendações e notas sobre desenvolvimento
+- Contribuição
 
 ---
 
-## Environment Variables
+## Sobre
+Esta API fornece CRUDs para os recursos abaixo e integra autenticação via JWT:
+- Usuários (cadastro, login, renovação de token, listagem, edição, exclusão)
+- Autores (CRUD)
+- Categorias (CRUD)
+- Livros (CRUD; relacionamentos com autor e categoria)
+- Tamanhos (CRUD)
+- Estoques (CRUD; relacionamentos com livro e tamanho)
 
-Crie um arquivo **.env** com as seguintes variáveis (usar os mesmos nomes em .env.example):
-
-- **PORT** - porta da aplicação (ex 3000)
-- **MONGO_URI** - URI de conexão com MongoDB
-- **JWT_SECRET** - segredo para assinaturas JWT
-- **JWT_EXPIRES_IN** - tempo de expiração do token (ex 1h)
-- **NODE_ENV** - environment (development test production)
-
----
-
-## Estrutura do Projeto
-
-- **src/models** - Mongoose models (User, Task)
-- **src/controllers** - lógica das rotas
-- **src/routes** - definição de rotas e versionamento (/api/v1)
-- **src/services** - lógica de integração entre controllers e modelos
-- **src/middleware** - autenticação, validação e tratamento de erros
-- **src/config** - conexão com DB e configs gerais
-- **src/docs** - arquivo OpenAPI (yaml/json) para Swagger UI
-- **src/tests** - testes unitários e de integração (Jest + Supertest)
+A API foi concebida para ser usada como backend isolado (sem front-end). A documentação Swagger será adicionada posteriormente.
 
 ---
 
-## API Endpoints
-
-Base path: **/api**
-
-Observação sobre versionamento: todas as rotas expostas sob **/api/v1**.
-
-- Auth
-  - POST **/api/auth/register**
-    - **Descrição**: registra novo usuário
-    - **Body exemplo**
-      - { "name": "João", "email": "joao@example.com", "password": "Senha@123" }
-    - **Respostas**
-      - 201 Created com objeto do usuário sem password
-      - 400 Bad Request se dados inválidos
-
-  - POST **/api/auth/login**
-    - **Descrição**: autentica e retorna JWT
-    - **Body exemplo**
-      - { "email": "joao@example.com", "password": "Senha@123" }
-    - **Respostas**
-      - 200 OK com { "accessToken": "<token>" }
-      - 401 Unauthorized se credenciais inválidas
-
-- Tasks Public Read
-  - GET **/api/tasks**
-    - **Descrição**: lista tarefas com paginação e filtros
-    - **Query params**
-      - page number, limit number, status string, ownerId string
-    - **Respostas**
-      - 200 OK com lista paginada
-      - 400 Bad Request para queries inválidas
-
-  - GET **/api/tasks/:id**
-    - **Descrição**: obtém tarefa por id
-    - **Respostas**
-      - 200 OK com objeto tarefa
-      - 404 Not Found se não existir
-      - 400 Bad Request para id inválido
-
-- Tasks Protected Write
-  - POST **/api/tasks**
-    - **Autorização**: Bearer token necessário
-    - **Descrição**: cria nova tarefa vinculada ao usuário autenticado
-    - **Body exemplo**
-      - { "title": "Comprar leite", "description": "1 litro", "dueDate": "2025-10-25T12:00:00Z", "status": "pending" }
-    - **Respostas**
-      - 201 Created com tarefa criada
-      - 400 Bad Request para payload inválido
-      - 401 Unauthorized se token ausente/ inválido
-
-  - PATCH **/api/tasks/:id**
-    - **Autorização**: Bearer token necessário
-    - **Descrição**: atualização parcial; somente owner ou admin permitido
-    - **Body exemplo**
-      - { "status": "done" }
-    - **Respostas**
-      - 200 OK com tarefa atualizada
-      - 400 Bad Request para payload inválido
-      - 401 Unauthorized se token ausente/ inválido
-      - 403 Forbidden se usuário não for owner
-      - 404 Not Found se id não existir
-
-  - DELETE **/api/tasks/:id**
-    - **Autorização**: Bearer token necessário
-    - **Descrição**: remove tarefa; somente owner ou admin permitido
-    - **Respostas**
-      - 204 No Content no sucesso
-      - 401 Unauthorized se token ausente/ inválido
-      - 403 Forbidden se usuário não for owner
-      - 404 Not Found se id não existir
+## Tecnologias
+- Node.js
+- Express
+- MongoDB (Mongoose)
+- JSON Web Tokens (jsonwebtoken)
+- Bcrypt (hash de senhas)
+- Jest + Supertest (testes)
+- dotenv (variáveis de ambiente)
 
 ---
 
-## Autenticação and Authorization
-
-- Mecanismo: **JWT**
-- Fluxo:
-  - usuário faz login em **/auth/login**
-  - recebe **accessToken** enviado no header Authorization como **Bearer <token>**
-  - middleware **auth** valida token, injeta **req.user** com payload do token
-  - rotas de escrita verificam **req.user.id** contra **task.ownerId** ou checam **role: admin**
-  - 
----
-
-## Testes
-
-- Frameworks: **Jest** e **Supertest**
-- Banco de testes: **mongodb-memory-server** para integração isolada
-- Scripts npm
-  - **npm test** roda suíte completa
-  - **npm run test:watch** roda em modo watch
-  - **npm run coverage** gera relatório de cobertura
-- Meta de cobertura: **>= 80%**
-- O que testar
-  - controllers unitários
-  - rotas com Supertest cobrindo cenários positivos e negativos
-  - middleware de autenticação e autorização
-  - validações de payload
+## Estrutura do projeto (resumida)
+- /src
+  - /config
+    - database.js (conexão com MongoDB)
+  - /controller
+    - controllers por recurso (autorLivroController, livroController, estoqueLivroController, etc.)
+  - /middleware
+    - autentificacaoMiddleware.js (verificação/Geração de JWT)
+  - /models
+    - modelos Mongoose (Usuario, Autor, Categoria, Livro, Estoque, Tamanho)
+  - /routes
+    - routers por recurso (usuarioRouter, livroRouter, etc.)
+  - /test
+    - testes de integração (Jest + Supertest)
+  - app.js (instância do Express)
+- package.json
 
 ---
 
-## Documentação
+## Endpoints principais
+Base path: /api/v1
 
-- Swagger UI disponível em **/api-docs**
-- Arquivo OpenAPI em **src/docs/openapi.yaml**
-- Documentar todos os endpoints com exemplos de request e response e códigos HTTP esperados
+Recursos e endpoints (resumo):
+
+- Usuário
+  - POST /api/v1/usuario — criar usuário
+  - POST /api/v1/usuario/login — login (recebe token)
+  - POST /api/v1/usuario/renova — renovar token (requere token atual)
+  - GET /api/v1/usuario — listar (requere token)
+  - GET /api/v1/usuario/:id — obter um usuário (requere token)
+  - PUT /api/v1/usuario/:id — editar usuário (requere token)
+  - DELETE /api/v1/usuario/:id — deletar (requere token)
+
+- Autor
+  - POST /api/v1/livro/autor — criar (requere token)
+  - GET /api/v1/livro/autor — listar
+  - GET /api/v1/livro/autor/:id — obter por id
+  - PUT /api/v1/livro/autor/:id — editar (requere token)
+  - DELETE /api/v1/livro/autor/:id — deletar (requere token)
+
+- Categoria
+  - POST /api/v1/livro/categoria — criar (requere token)
+  - GET /api/v1/livro/categoria — listar
+  - GET /api/v1/livro/categoria/:id — obter
+  - PUT /api/v1/livro/categoria/:id — editar (requere token)
+  - DELETE /api/v1/livro/categoria/:id — deletar (requere token)
+
+- Livro
+  - POST /api/v1/livro — criar (requere token)
+  - GET /api/v1/livro — listar
+  - GET /api/v1/livro/:id — obter
+  - PUT /api/v1/livro/:id — editar (requere token)
+  - DELETE /api/v1/livro/:id — deletar (requere token)
+
+- Tamanho
+  - POST /api/v1/livro/tamanho — criar (requere token)
+  - GET /api/v1/livro/tamanho — listar
+  - GET /api/v1/livro/tamanho/:id — obter
+  - PUT /api/v1/livro/tamanho/:id — editar (requere token)
+  - DELETE /api/v1/livro/tamanho/:id — deletar (requere token)
+
+- Estoque
+  - POST /api/v1/livro/estoque — criar (requere token)
+  - GET /api/v1/livro/estoque — listar
+  - GET /api/v1/livro/estoque/:id — obter
+  - PUT /api/v1/livro/estoque/:id — editar (requere token)
+  - DELETE /api/v1/livro/estoque/:id — deletar (requere token)
+
+Observação: muitos endpoints de criação/edição aceitam relacionamentos por nome (ex.: enviar campo "livro": "Nome do livro") — o controller resolve o ObjectId correspondente e retorna objetos populados (livro e tamanho) nas respostas.
 
 ---
 
-## Como usar exemplos rápidos
+## Variáveis de ambiente necessárias
+Crie um arquivo `.env` (não commitar) com as variáveis:
 
-- Registrar usuário
-  - POST /api/v1/auth/register
-  - Body JSON com name email password
-- Autenticar
-  - POST /api/v1/auth/login
-  - Obter accessToken
-- Criar tarefa
-  - POST /api/v1/tasks com header Authorization Bearer token
-- Listar tarefas
-  - GET /api/v1/tasks?page=1&limit=10&status=pending
+- JWT_SEGREDO — segredo para assinar/verificar tokens JWT
+- MONGODB_USER — usuário do MongoDB (se usar Mongo Atlas)
+- MONGODB_PASSWD — senha do MongoDB
+- MONGODB_HOST — host/cluster (ex.: cluster0.mongodb.net)
+- MONGODB_DBNAM — nome do banco de dados
+
+Exemplo mínimo:
+JWT_SEGREDO=algum-segredo-secreto
+MONGODB_USER=usuario
+MONGODB_PASSWD=senha
+MONGODB_HOST=localhost:27017
+MONGODB_DBNAM=apirestful_test
+
+Dica: Para testes locais isolados, use mongodb-memory-server (explicado abaixo) para não depender de credenciais externas.
 
 ---
+
+## Instalação e execução
+
+1. Instalar dependências
+   - npm install
+
+2. Variáveis de ambiente
+   - Crie `.env` com as variáveis listadas acima.
+
+3. Rodar a aplicação (desenvolvimento)
+   - npm run dev
+   - Ou iniciar em produção:
+   - npm start
+
+O app por padrão executa a conexão com o banco ao inicializar (via conectarAoBancoDeDados em src/config/database.js). Em ambiente de desenvolvimento/CI recomenda-se usar configuração de banco apropriada.
+
+---
+
+## Rodando os testes
+
+O projeto utiliza Jest + Supertest.
+
+Observações antes de rodar:
+- O app conecta no banco ao ser importado; para rodar testes sem um Mongo real, recomendamos usar mongodb-memory-server ou condicionar a conexão em app.js quando NODE_ENV === 'test'.
+
+1. Rodar testes (única vez)
+   - npm run test
+   - Nota: o script atual pode estar configurado com --watchAll; para execução única ajuste em package.json para:
+     "test": "jest --runInBand --detectOpenHandles"
