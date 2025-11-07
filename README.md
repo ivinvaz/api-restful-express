@@ -10,8 +10,6 @@ Projeto backend de uma API RESTful desenvolvida com Node.js, Express e MongoDB p
 - Variáveis de ambiente
 - Instalação e execução
 - Rodando os testes (local e CI)
-- Recomendações e notas sobre desenvolvimento
-- Contribuição
 
 ---
 
