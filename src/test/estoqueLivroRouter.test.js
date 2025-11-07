@@ -147,7 +147,7 @@ describe('Testes das rotas de estoque', ()=>{
         expect(resposta.headers['content-type']).toMatch(/json/);
         expect(resposta.body._id).toBeDefined();
         expect(resposta.body.livro).toBe(livro);
-        expect(resposta.body.quantidade).toBe(1);
+        expect(resposta.body.quantidade).toBe(quantidade);
         expect(resposta.body.tamanho).toBe(tamanho);
         expect(resposta.body.preco).toBe(preco);
         id = resposta.body._id;
@@ -292,6 +292,7 @@ describe('Testes das rotas de estoque', ()=>{
         expect(resposta.body.msg).toContain("Estoque não encontrado");
     });
 });
+
 
 
 
