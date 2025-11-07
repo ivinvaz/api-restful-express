@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const schema = new mongoose.Schema({
   nome: {
     type: String,
-    required: [true, "Nome do Tamanho é obrigatório"],
+    required: [true, "Nome do tamanho é obrigatório"],
     trim: true
   }
 });
