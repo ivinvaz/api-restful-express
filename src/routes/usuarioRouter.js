@@ -14,8 +14,9 @@ router.get('/', autentificacao.verificarTokenDeAutentificacao, usuarioController
 
 router.get('/:id', autentificacao.verificarTokenDeAutentificacao, usuarioController.buscarUsuario, usuarioController.exibirUsuario);
 
-router.put('/', autentificacao.verificarTokenDeAutentificacao, usuarioController.buscarUsuario, usuarioController.editarUsuario);
+router.put('/:id', autentificacao.verificarTokenDeAutentificacao, usuarioController.buscarUsuario, usuarioController.editarUsuario);
 
-router.delete('/', autentificacao.verificarTokenDeAutentificacao, usuarioController.buscarUsuario, usuarioController.deletarUsuario);
+router.delete('/:id', autentificacao.verificarTokenDeAutentificacao, usuarioController.buscarUsuario, usuarioController.deletarUsuario);
 
 module.exports = router;
+
