@@ -9,24 +9,26 @@ let token = null;
 
 describe('Testes das rotas de autor', ()=>{
     
-    test('MOCK POST:201', async()=>{
-        const resposta = await request.post("/api/v1/usuario").send({
+    beforeAll(async () => {
+        await request.post("/api/v1/usuario").send({
             "nome":"Jose",
             "email":"vaz@gmail.com",
             "senha":"senha"
         });
-    })
-
-    test('MOCK POST:200', async()=>{
+    
         const resposta = await request.post("/api/v1/usuario/login").send({
             "email":"vaz@gmail.com",
             "senha":"senha"
         });
-        usuario = resposta;
-    })
+        
+        expect(resposta.status).toBe(200);
+        expect(resposta.body.token).toBeDefined();
+        token = resposta.body.token;
+    });
+    
 
     test('POST:422 nome inexistente', async ()=>{
-        const resposta = await request.post(url).set("authorization",`Bearer ${token}`).set("authorization",`Bearer ${token}`).send({
+        const resposta = await request.post(url).set("authorization",`Bearer ${token}`).send({
             "nome":null,
             "idade":"abc",
             "nacionalidade":"Brasileiro"  
@@ -37,7 +39,7 @@ describe('Testes das rotas de autor', ()=>{
     });
 
     test('POST:422 idade incorreta', async ()=>{
-        const resposta = await request.post(url).set("authorization",`Bearer ${token}`).set("authorization",`Bearer ${token}`).send({
+        const resposta = await request.post(url).set("authorization",`Bearer ${token}`).send({
             "nome":"Axe Of Assis",
             "idade":"abc",
             "nacionalidade":"Brasileiro"  
@@ -48,7 +50,7 @@ describe('Testes das rotas de autor', ()=>{
     });
 
     test('POST:422 idade inexistente', async ()=>{
-        const resposta = await request.post(url).set("authorization",`Bearer ${token}`).set("authorization",`Bearer ${token}`).send({
+        const resposta = await request.post(url).set("authorization",`Bearer ${token}`).send({
             "nome":"Axe Of Assis",
             "idade":null,
             "nacionalidade":"Brasileiro"  
@@ -59,7 +61,7 @@ describe('Testes das rotas de autor', ()=>{
     });
 
     test('POST:201', async ()=>{
-        const resposta = await request.post(url).set("authorization",`Bearer ${token}`).set("authorization",`Bearer ${token}`).send({
+        const resposta = await request.post(url).set("authorization",`Bearer ${token}`).send({
             "nome":"Axe Of Assis",
             "idade":24,
             "nacionalidade":"Brasileiro"  
@@ -74,27 +76,27 @@ describe('Testes das rotas de autor', ()=>{
     });
 
     test('GET:200', async()=>{
-        const resposta = await request.get(url).set("authorization",`Bearer ${token}`).set("authorization",`Bearer ${token}`);
+        const resposta = await request.get(url);
         expect(resposta.status).toBe(200);
         expect(Array.isArray(resposta.body)).toBe(true);
         expect(resposta.headers['content-type']).toMatch(/json/);
     });
 
     test('GET:id:400 id inválido', async()=>{
-        const resposta = await request.get(`${url}/0`).set("authorization",`Bearer ${token}`);
+        const resposta = await request.get(`${url}/0`);
         expect(resposta.headers['content-type']).toMatch(/json/);
         expect(resposta.body.msg).toContain("Parâmetro inválido");
     });
     
     test('GET:id:404 id não encontrado', async()=>{
-        const resposta = await request.get(`${url}/000000000000000000000000`).set("authorization",`Bearer ${token}`);
+        const resposta = await request.get(`${url}/000000000000000000000000`);
         expect(resposta.status).toBe(404);
         expect(resposta.headers['content-type']).toMatch(/json/);
         expect(resposta.body.msg).toContain("Autor não encontrado");
     });
 
     test('GET:id:200', async ()=>{
-        const resposta = await request.get(`${url}/${id}`).set("authorization",`Bearer ${token}`);
+        const resposta = await request.get(`${url}/${id}`);
         expect(resposta.headers['content-type']).toMatch(/json/);
         expect(resposta.body.nome).toBe("Axe Of Assis");
         expect(resposta.body.idade).toBe(24);
@@ -136,7 +138,7 @@ describe('Testes das rotas de autor', ()=>{
     });
 
     test('GET:id:200', async ()=>{
-        const resposta = await request.get(`${url}/${id}`).set("authorization",`Bearer ${token}`);
+        const resposta = await request.get(`${url}/${id}`);
         expect(resposta.headers['content-type']).toMatch(/json/);
         expect(resposta.body.nome).toBe("Axe Of Assis");
         expect(resposta.body.idade).toBe(34);
@@ -162,7 +164,7 @@ describe('Testes das rotas de autor', ()=>{
     });
 
     test('GET:id:404 id não encontrado', async()=>{
-        const resposta = await request.get(`${url}/${id}`).set("authorization",`Bearer ${token}`);
+        const resposta = await request.get(`${url}/${id}`);
         expect(resposta.status).toBe(404);
         expect(resposta.headers['content-type']).toMatch(/json/);
         expect(resposta.body.msg).toContain("Autor não encontrado");
