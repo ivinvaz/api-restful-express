@@ -58,7 +58,7 @@ async function buscarCategoria(req,res,next){
     if(categoriaEncontrado) {
         req.categoria = categoriaEncontrado;
         return next();
-    }else return res.status(404).json({msg:"Categoria não encontrado"});
+    }else return res.status(404).json({msg:"Categoria não encontrada"});
 }
 
 async function exibirCategoria(req,res){
