@@ -11,7 +11,7 @@ async function adicionarUsuario(req,res){
         });
         const usuarioResposta = novoUsuario.toObject();
         delete usuarioResposta.senha;
-        return res.status(201).json(novoUsuario);
+        return res.status(201).json(usuarioResposta);
     }catch (err) {
         if (err.name === 'ValidationError') {
           const mensagens = Object.values(err.errors).map(e => e.message);
