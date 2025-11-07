@@ -4,7 +4,7 @@ const request = supertest(app);
 
 const url = '/api/v1/usuario';
 const urlLogin = '/api/v1/usuario/login'
-const urlRenovar = '/api/v1/usuario/renovar'
+const urlRenovar = '/api/v1/usuario/renova'
 
 let id = null;
 let token = null;
@@ -265,4 +265,5 @@ describe('Testes das rotas de usuario', ()=>{
         expect(resposta.body.msg).toContain("Usuário não encontrado");
     });
 });
+
 
