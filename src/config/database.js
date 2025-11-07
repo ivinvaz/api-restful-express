@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const url = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWD}@${process.env.MONGODB_HOST}/${process.env.MONGODB_DBNAM}`
 
-export const conectarAoBancoDeDados = async () => {
+const conectarAoBancoDeDados = async () => {
   try {
     await mongoose.connect(url, {
       useNewUrlParser: true,

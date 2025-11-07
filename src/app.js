@@ -3,9 +3,9 @@ require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const { conectarAoBancoDeDados } = require('./config/database');
+const conectarAoBancoDeDados = require('./config/database');
 
-const documentacaoSwaggerRouter = require('./routes/documentacaoSwaggerRouter');
+//const documentacaoSwaggerRouter = require('./routes/documentacaoSwaggerRouter');
 const usuarioRouter = require('./routes/usuarioRouter')
 const livroRouter = require('./routes/livroRouter');
 const categoriaLivroRouter = require('./routes/categoriaLivroRouter');
@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/api/v1/api-documentation',documentacaoSwaggerRouter);
+//app.use('/api/v1/api-documentation',documentacaoSwaggerRouter);
 
 app.use('/api/v1/usuario',usuarioRouter);
 
