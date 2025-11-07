@@ -1,16 +1,21 @@
 const express = require('express');
-const autorLivroController = require('../controller/autorLivroController');
+const autentificacaoController = require('../controller/autentificacaoController');
+const usuarioController = require('../controller/usuarioController');
 const router = express.Router();
 const autentificacao = require('../middleware/autentificacaoMiddleware');
 
-router.post('/', autentificacao.verificarTokenDeAutentificacao, autorLivroController.adicionarAutor);
+router.post('/', usuarioController.adicionarUsuario);
 
-router.put('/:id', autentificacao.verificarTokenDeAutentificacao, autorLivroController.buscarAutor, autorLivroController.editarAutor);
+router.post('/login', autentificacaoController.logarUsuario);
 
-router.get('/', autorLivroController.listarAutores);
+router.post('/renova', autentificacao.verificarTokenDeAutentificacao, autentificacao.renovarTokenDeAutentificacao);
 
-router.get('/:id', autorLivroController.buscarAutor, autorLivroController.exibirAutor);
+router.get('/', autentificacao.verificarTokenDeAutentificacao, usuarioController.listarUsuarios);
 
-router.delete('/:id', autentificacao.verificarTokenDeAutentificacao, autorLivroController.buscarAutor, autorLivroController.deletarAutor);
+router.get('/:id', autentificacao.verificarTokenDeAutentificacao, usuarioController.buscarUsuario, usuarioController.exibirUsuario);
+
+router.put('/', autentificacao.verificarTokenDeAutentificacao, usuarioController.buscarUsuario, usuarioController.editarUsuario);
+
+router.delete('/', autentificacao.verificarTokenDeAutentificacao, usuarioController.buscarUsuario, usuarioController.deletarUsuario);
 
 module.exports = router;
