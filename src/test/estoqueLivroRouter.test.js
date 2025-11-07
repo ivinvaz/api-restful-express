@@ -2,7 +2,7 @@ const supertest = require('supertest');
 const app = require('../app');
 const request = supertest(app);
 
-const url = '/api/v1/estoque';
+const url = '/api/v1/livro/estoque';
 const urlTamanho = '/api/v1/livro/tamanho';
 const urlLivro = 'api/v1/livro';
 
@@ -292,3 +292,4 @@ describe('Testes das rotas de estoque', ()=>{
         expect(resposta.body.msg).toContain("Estoque não encontrado");
     });
 });
+
