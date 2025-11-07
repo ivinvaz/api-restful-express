@@ -10,7 +10,6 @@ let id = null;
 let token = null;
 
 const tempo = Date.now();
-const numeroAleatorio = Math.floor(Math.random() * 1000);
 let nomeUser = `nomeUserTest${tempo}`;
 let emailUser = `emailUserTest${tempo}@gmail.com`;
 let senhaUser = `senhaUserTest${tempo}`;
@@ -266,3 +265,4 @@ describe('Testes das rotas de usuario', ()=>{
         expect(resposta.body.msg).toContain("Usuário não encontrado");
     });
 });
+
