@@ -185,7 +185,7 @@ describe('Testes das rotas de estoque', ()=>{
     });
 
     test('PUT:id:400 id inválido', async ()=>{
-        const resposta = (await request.put(`${url}/0`)).setEncoding({
+        const resposta = await request.put(`${url}/0`).send({
             "livro":livro,
             "quantidade":quantidade+1,
             "tamanho":tamanho,
@@ -197,7 +197,7 @@ describe('Testes das rotas de estoque', ()=>{
     });
 
     test('PUT:id:404 id não encontrado', async ()=>{
-        const resposta = (await request.put(`${url}/000000000000000000000000`)).setEncoding({
+        const resposta = await request.put(`${url}/000000000000000000000000`).send({
             "livro":livro,
             "quantidade":quantidade+1,
             "tamanho":tamanho,
@@ -292,4 +292,5 @@ describe('Testes das rotas de estoque', ()=>{
         expect(resposta.body.msg).toContain("Estoque não encontrado");
     });
 });
+
 
