@@ -113,7 +113,7 @@ describe('Testes das rotas de tamanho', ()=>{
         });
         expect(resposta.status).toBe(401);
         expect(resposta.headers['content-type']).toMatch(/json/);
-        expect(resposta.body.nome).toBe("Token ausente");
+        expect(resposta.body.msg).toBe("Token ausente");
     });
 
     test('PUT:id:200', async()=>{
@@ -158,3 +158,4 @@ describe('Testes das rotas de tamanho', ()=>{
         expect(resposta.body.msg).toContain("Tamanho não encontrado");
     });
 });
+
