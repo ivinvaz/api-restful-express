@@ -125,8 +125,6 @@ MONGODB_PASSWD=senha
 MONGODB_HOST=localhost:27017
 MONGODB_DBNAM=apirestful_test
 
-Dica: Para testes locais isolados, use mongodb-memory-server (explicado abaixo) para não depender de credenciais externas.
-
 ---
 
 ## Instalação e execução
