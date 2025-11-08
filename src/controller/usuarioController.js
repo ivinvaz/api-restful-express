@@ -4,6 +4,10 @@ const Usuario = require('../models/usuarioModel');
 
 async function adicionarUsuario(req,res){
     try{
+        if (!req.body.senha) {
+            return res.status(422).json({ msg: ["Senha do usuário é obrigatória"] });
+        }
+
         const novoUsuario = await Usuario.create({
             nome: req.body.nome,
             email: req.body.email,
@@ -13,6 +17,7 @@ async function adicionarUsuario(req,res){
         delete usuarioResposta.senha;
         return res.status(201).json(usuarioResposta);
     }catch (err) {
+        
         if (err.name === 'ValidationError') {
           const mensagens = Object.values(err.errors).map(e => e.message);
           return res.status(422).json({ msg: mensagens });

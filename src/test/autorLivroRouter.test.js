@@ -195,7 +195,7 @@ describe('Testes das rotas de autor', ()=>{
     });
 
     test('DELETE:id:401 token ausente', async()=>{
-        const resposta = await request.delete(`${url}/${id}`).set("authorization",`Bearer ${token}`)
+        const resposta = await request.delete(`${url}/${id}`)
         expect(resposta.status).toBe(401);
         expect(resposta.headers['content-type']).toMatch(/json/);
         expect(resposta.body.msg).toContain("Token ausente");

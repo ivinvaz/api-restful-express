@@ -97,7 +97,7 @@ describe('Testes das rotas de estoque', ()=>{
         })
         expect(resposta.status).toBe(422);
         expect(resposta.headers['content-type']).toMatch(/json/);
-        expect(resposta.body.msg).toContain("Preço é obrigatório");
+        expect(resposta.body.msg).toContain("Preço do livro é obrigatorio");
     });
 
     test('POST:404 livro não encontrado', async ()=>{
@@ -178,14 +178,14 @@ describe('Testes das rotas de estoque', ()=>{
         const resposta = await request.get(`${url}/${id}`);
         expect(resposta.headers['content-type']).toMatch(/json/);
         expect(resposta.status).toBe(200);
-        expect(resposta.body.livro).toBe(livro);
-        expect(resposta.body.quantidade).toBe(1);
-        expect(resposta.body.tamanho).toBe(tamanho);
+        expect(resposta.body.livro.nome).toBe(livro);
+        expect(resposta.body.quantidade).toBe(quantidade);
+        expect(resposta.body.tamanho.nome).toBe(tamanho);
         expect(resposta.body.preco).toBe(preco);
     });
 
     test('PUT:id:400 id inválido', async ()=>{
-        const resposta = await request.put(`${url}/0`).send({
+        const resposta = await request.put(`${url}/0`).set("authorization",`Bearer ${token}`).send({
             "livro":livro,
             "quantidade":quantidade+1,
             "tamanho":tamanho,
@@ -197,7 +197,7 @@ describe('Testes das rotas de estoque', ()=>{
     });
 
     test('PUT:id:404 id não encontrado', async ()=>{
-        const resposta = await request.put(`${url}/000000000000000000000000`).send({
+        const resposta = await request.put(`${url}/000000000000000000000000`).set("authorization",`Bearer ${token}`).send({
             "livro":livro,
             "quantidade":quantidade+1,
             "tamanho":tamanho,
@@ -209,7 +209,7 @@ describe('Testes das rotas de estoque', ()=>{
     });
 
     test('PUT:id:404 livro não encontrado', async ()=>{
-        const resposta = await request.put(url).set("authorization",`Bearer ${token}`).send({
+        const resposta = await request.put(`${url}/${id}`).set("authorization",`Bearer ${token}`).send({
             "livro":"Outro Livro",
             "quantidade":quantidade+1,
             "tamanho":tamanho,
@@ -221,7 +221,7 @@ describe('Testes das rotas de estoque', ()=>{
     });
 
     test('PUT:id:404 tamanho não encontrado', async ()=>{
-        const resposta = await request.put(url).set("authorization",`Bearer ${token}`).send({
+        const resposta = await request.put(`${url}/${id}`).set("authorization",`Bearer ${token}`).send({
             "livro":livro,
             "quantidade":quantidade+1,
             "tamanho":"Outro Tamanho",
@@ -233,7 +233,7 @@ describe('Testes das rotas de estoque', ()=>{
     });
 
     test('PUT:id:401 token ausente', async ()=>{
-        const resposta = await request.put(url).send({
+        const resposta = await request.put(`${url}/${id}`).send({
             "livro":livro,
             "quantidade":quantidade+1,
             "tamanho":tamanho,
@@ -245,7 +245,7 @@ describe('Testes das rotas de estoque', ()=>{
     });
 
     test('PUT:id:200', async ()=>{
-        const resposta = await request.put(url).set("authorization",`Bearer ${token}`).send({
+        const resposta = await request.put(`${url}/${id}`).set("authorization",`Bearer ${token}`).send({
             "livro":livro,
             "quantidade":quantidade+1,
             "tamanho":tamanho,
@@ -253,9 +253,9 @@ describe('Testes das rotas de estoque', ()=>{
         })
         expect(resposta.headers['content-type']).toMatch(/json/);
         expect(resposta.status).toBe(200);
-        expect(resposta.body.livro).toBe(livro);
+        expect(resposta.body.livro.nome).toBe(livro);
         expect(resposta.body.quantidade).toBe(quantidade+1);
-        expect(resposta.body.tamanho).toBe(tamanho);
+        expect(resposta.body.tamanho.nome).toBe(tamanho);
         expect(resposta.body.preco).toBe(preco);
     });
 

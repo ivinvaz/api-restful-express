@@ -26,9 +26,22 @@ async function adicionarLivro(req,res){
         return res.status(201).json(livroPopulado);
 
     }catch (err) {
+        if (err.name === 'CastError' && err.path === 'paginas') {
+            return res.status(422).json({ msg: ['Paginas não é um número válido'] });
+        }
+
         if (err.name === 'ValidationError') {
-          const mensagens = Object.values(err.errors).map(e => e.message);
-          return res.status(422).json({ msg: mensagens });
+
+            const castErrorMsg = Object.values(err.errors)
+            .filter(e => e.name === 'CastError' && e.path === 'paginas')
+            .map(() => 'Paginas não é um número válido');
+
+            if (castErrorMsg.length > 0) {
+                return res.status(422).json({ msg: castErrorMsg });
+            }
+
+            const mensagens = Object.values(err.errors).map(e => e.message);
+            return res.status(422).json({ msg: mensagens });
         }
         return res.status(500).json({ msg: "Erro interno do servidor" });
     }

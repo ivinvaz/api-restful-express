@@ -102,7 +102,7 @@ describe('Testes das rotas de livro', ()=>{
         const resposta = await request.post(url).set("authorization",`Bearer ${token}`).send({
             "nome":nome,
             "paginas":paginas,
-            "autor":"Joao Pessoa",
+            "autor":autor,
             "categoria":"Outra categoria" 
         })
         expect(resposta.status).toBe(404);
@@ -167,7 +167,7 @@ describe('Testes das rotas de livro', ()=>{
         expect(resposta.body.nome).toBe(nome);
         expect(resposta.body.paginas).toBe(paginas);
         expect(resposta.body.autor.nome).toBe(autor);
-        expect(resposta.body.categoria.nome).toBe("Literatura");
+        expect(resposta.body.categoria.nome).toBe(categoria);
     });
 
     test('PUT:id:400 id inválido', async()=>{
@@ -218,7 +218,7 @@ describe('Testes das rotas de livro', ()=>{
         expect(resposta.body.nome).toBe(nome);
         expect(resposta.body.paginas).toBe(paginas+1);
         expect(resposta.body.autor.nome).toBe(autor);
-        expect(resposta.body.categoria.nome).toBe("Literatura");
+        expect(resposta.body.categoria.nome).toBe(categoria);
     });
 
     test('GET:id:200', async ()=>{
@@ -228,7 +228,7 @@ describe('Testes das rotas de livro', ()=>{
         expect(resposta.body.nome).toBe(nome);
         expect(resposta.body.paginas).toBe(paginas+1);
         expect(resposta.body.autor.nome).toBe(autor);
-        expect(resposta.body.categoria.nome).toBe("Literatura");
+        expect(resposta.body.categoria.nome).toBe(categoria);
     });
 
     test('DELETE:id:400 id inválido', async()=>{

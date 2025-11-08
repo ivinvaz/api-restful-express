@@ -11,11 +11,26 @@ async function adicionarAutor(req,res){
         });
         return res.status(201).json(novoAutor);
     }catch (err) {
-        if (err.name === 'ValidationError') {
-          const mensagens = Object.values(err.errors).map(e => e.message);
-          return res.status(422).json({ msg: mensagens });
-        }
-        return res.status(500).json({ msg: "Erro interno do servidor" });
+            
+    if (err.name === 'CastError' && err.path === 'idade') {
+        return res.status(422).json({ msg: ['Idade não é um número válido'] });
+    }
+    
+    if (err.name === 'ValidationError') {
+      
+      const castErrorMsg = Object.values(err.errors)
+        .filter(e => e.name === 'CastError' && e.path === 'idade')
+        .map(() => 'Idade não é um número válido');
+
+      if (castErrorMsg.length > 0) {
+        return res.status(422).json({ msg: castErrorMsg });
+      }
+
+      const mensagens = Object.values(err.errors).map(e => e.message);
+      return res.status(422).json({ msg: mensagens });
+    }
+    
+    return res.status(500).json({ msg: "Erro interno do servidor" });
     }
 }
 
@@ -42,6 +57,9 @@ async function editarAutor(req,res){
         if (err.name === 'ValidationError') {
           const mensagens = Object.values(err.errors).map(e => e.message);
           return res.status(422).json({ msg: mensagens });
+        }
+        if (err.name === 'CastError' && err.path === 'idade') {
+            return res.status(422).json({ msg: ['Idade não é um número válido'] });
         }
         return res.status(500).json({ msg: "Erro interno do servidor" });
     }

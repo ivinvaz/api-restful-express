@@ -13,7 +13,7 @@ async function adicionarEstoque(req,res){
         }
         if(req.body.tamanho){
             tamanhoEncontrado = await Tamanho.findOne({nome:req.body.tamanho});
-            if(!tamanhoEncontrado) return res.status(404).json({msg:"Tamanho não encontrada"});
+            if(!tamanhoEncontrado) return res.status(404).json({msg:"Tamanho não encontrado"});
         }
         const novoEstoque = await Estoque.create({
             livro: livroEncontrado?._id,
@@ -21,7 +21,10 @@ async function adicionarEstoque(req,res){
             tamanho: tamanhoEncontrado?._id,
             preco: req.body.preco
         });
-        return res.status(201).json(novoEstoque)
+        const estoqueResposta = novoEstoque.toObject();
+        estoqueResposta.livro = req.body.livro; 
+        estoqueResposta.tamanho = req.body.tamanho; 
+        return res.status(201).json(estoqueResposta);
     }catch (err) {
         if (err.name === 'ValidationError') {
           const mensagens = Object.values(err.errors).map(e => e.message);
@@ -43,7 +46,7 @@ async function editarEstoque(req,res){
         }
         if(req.body.tamanho){
             tamanhoEncontrado = await Tamanho.findOne({nome:req.body.tamanho});
-            if(!tamanhoEncontrado) return res.status(404).json({msg:"Tamanho não encontrada"});
+            if(!tamanhoEncontrado) return res.status(404).json({msg:"Tamanho não encontrado"});
         }
         const estoqueAtualizado = await Estoque.findOneAndUpdate(
             {
@@ -59,7 +62,7 @@ async function editarEstoque(req,res){
                 runValidators: true, 
                 new:true      
             }
-        )
+        ).populate('livro').populate('tamanho');
         return res.status(200).json(estoqueAtualizado);
     }catch (err) {
         if (err.name === 'ValidationError') {

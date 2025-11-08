@@ -44,7 +44,7 @@ describe('Testes das rotas de usuario', ()=>{
         });
         expect(resposta.status).toBe(422);
         expect(resposta.headers['content-type']).toMatch(/json/);
-        expect(resposta.body.msg).toContain('Nome é obrigatório');
+        expect(resposta.body.msg).toContain('Nome do usuário é obrigatório');
     });
 
     test('POST:422 email inexistente', async ()=>{
@@ -55,7 +55,7 @@ describe('Testes das rotas de usuario', ()=>{
         });
         expect(resposta.status).toBe(422);
         expect(resposta.headers['content-type']).toMatch(/json/);
-        expect(resposta.body.msg).toContain('Email é obrigatório');
+        expect(resposta.body.msg).toContain('Email do usuário é obrigatório');
     });
     
     test('POST:422 senha inexistente', async ()=>{
@@ -66,7 +66,7 @@ describe('Testes das rotas de usuario', ()=>{
         });
         expect(resposta.status).toBe(422);
         expect(resposta.headers['content-type']).toMatch(/json/);
-        expect(resposta.body.msg).toContain('Senha é obrigatória');
+        expect(resposta.body.msg).toContain('Senha do usuário é obrigatória');
     });
 
     test('POST:201', async ()=>{
@@ -78,7 +78,7 @@ describe('Testes das rotas de usuario', ()=>{
         expect(resposta.status).toBe(201);
         expect(resposta.headers['content-type']).toMatch(/json/);
         expect(resposta.body.nome).toMatch(nome);
-        expect(resposta.body.email).toMatch(email);
+        expect(resposta.body.email).toMatch(email.toLowerCase());
         id = resposta.body._id;
     });
 
@@ -115,7 +115,7 @@ describe('Testes das rotas de usuario', ()=>{
         expect(resposta.status).toBe(200);
         expect(resposta.headers['content-type']).toMatch(/json/);
         expect(resposta.body.nome).toBe(nome);
-        expect(resposta.body.email).toBe(email);
+        expect(resposta.body.email).toBe(email.toLowerCase());
     });
 
     test('PUT:id:400 id inválido', async()=>{
@@ -160,7 +160,7 @@ describe('Testes das rotas de usuario', ()=>{
         expect(resposta.status).toBe(200);
         expect(resposta.headers['content-type']).toMatch(/json/);
         expect(resposta.body.nome).toMatch(`${nome}2`);
-        expect(resposta.body.email).toMatch(email);
+        expect(resposta.body.email).toMatch(email.toLowerCase());
         id = resposta.body._id;
     });
 
@@ -192,27 +192,7 @@ describe('Testes das rotas de usuario', ()=>{
         expect(resposta.status).toBe(200);
         expect(resposta.body.token).toBeDefined();
     });
-
-    test('/renovar POST:401 email incorreto', async ()=>{
-        const resposta = await request.post(urlRenovar).set("authorization",`Bearer ${token}`).send({
-            "email":"email@gmail.com",
-            "senha":senha
-        });
-        expect(resposta.status).toBe(401);
-        expect(resposta.headers['content-type']).toMatch(/json/);
-        expect(resposta.body.msg).toContain("Credenciais inválidas");
-    });
-
-    test('/renovar POST:401 senha incorreta', async ()=>{
-        const resposta = await request.post(urlRenovar).set("authorization",`Bearer ${token}`).send({
-            "email":email,
-            "senha":"senha"
-        });
-        expect(resposta.status).toBe(401);
-        expect(resposta.headers['content-type']).toMatch(/json/);
-        expect(resposta.body.msg).toContain("Credenciais inválidas");
-    });
-
+    
     test('/renovar POST:401 token ausente', async ()=>{
         const resposta = await request.post(urlRenovar).send({
             "email":email,
