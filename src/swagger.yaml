@@ -46,6 +46,8 @@ paths:
       tags: 
          - usuario
       responses:
+        401:
+          $ref: '#/components/responses/erro401'
         500:
           $ref: '#/components/responses/erro500'
         200:
