@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const conectarAoBancoDeDados = require('./config/database');
 
-//const documentacaoSwaggerRouter = require('./routes/documentacaoSwaggerRouter')
+const documentacaoSwaggerRouter = require('./routes/documentacaoSwaggerRouter')
 
 const categoriaLivroRouter = require('./routes/categoriaLivroRouter');
 const tamanhoLivroRouter = require('./routes/tamanhoLivroRouter');
@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-//app.use('/api/v1/api-documentation',documentacaoSwaggerRouter);
+app.use('/api/v1/api-documentation', documentacaoSwaggerRouter);
 
 app.use('/api/v1/livro/categoria',categoriaLivroRouter);
 app.use('/api/v1/livro/tamanho',tamanhoLivroRouter);

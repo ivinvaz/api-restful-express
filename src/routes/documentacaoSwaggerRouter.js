@@ -3,7 +3,7 @@ const YAML = require('yaml');
 const fs = require('fs');
 const swaggerUi = require('swagger-ui-express');
 
-const file = fs.readFileSync("../swagger.yaml","utf-8");
+const file = fs.readFileSync("src/swagger.yaml","utf-8");
 const swaggerDoc = YAML.parse(file);
 const router = express.Router();
 
