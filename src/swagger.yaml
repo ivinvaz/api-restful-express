@@ -116,7 +116,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: usuário editado
           content:
             application/json:
               schema:
@@ -164,7 +164,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: token gerado
           content:
             application/json:
               schema:
@@ -181,7 +181,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: token renovado
           content:
             application/json:
               schema:
@@ -209,7 +209,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         201:
-          description: só pra passar
+          description: categoria criada
           content:
             application/json:
               schema:
@@ -223,7 +223,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: todas as categorias
           content:
             application/json:
               schema:
@@ -260,7 +260,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: categoria editada
           content:
             application/json:
               schema:
@@ -284,7 +284,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: categoria selecionada
           content:
             application/json:
               schema:
@@ -336,7 +336,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         201:
-          description: só pra passar
+          description: autor criado
           content:
             application/json:
               schema:
@@ -350,7 +350,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: todos os autores
           content:
             application/json:
               schema:
@@ -387,7 +387,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: autor editado
           content:
             application/json:
               schema:
@@ -411,7 +411,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: autor selecionado
           content:
             application/json:
               schema:
@@ -461,7 +461,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         201:
-          description: só pra passar
+          description: tamanho criado
           content:
             application/json:
               schema:
@@ -475,7 +475,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: todos os tamanhos
           content:
             application/json:
               schema:
@@ -512,7 +512,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: tamanho editado
           content:
             application/json:
               schema:
@@ -536,7 +536,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: tamanho selecionado
           content:
             application/json:
               schema:
@@ -590,7 +590,7 @@ paths:
         422:
           $ref: '#/components/responses/erro422'
         201:
-          description: só pra passar
+          description: livro criado
           content:
             application/json:
               schema:
@@ -604,7 +604,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: todos os livros
           content:
             application/json:
               schema:
@@ -643,7 +643,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: livro editado
           content:
             application/json:
               schema:
@@ -667,7 +667,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: livro selecionado
           content:
             application/json:
               schema:
@@ -721,7 +721,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         201:
-          description: só pra passar
+          description: estoque criado
           content:
             application/json:
               schema:
@@ -735,7 +735,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: todos os estoques
           content:
             application/json:
               schema:
@@ -774,7 +774,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: estoque editado
           content:
             application/json:
               schema:
@@ -798,7 +798,7 @@ paths:
         500:
           $ref: '#/components/responses/erro500'
         200:
-          description: só pra passar
+          description: estoque selecionado
           content:
             application/json:
               schema:
