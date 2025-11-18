@@ -172,6 +172,8 @@ paths:
   /api/v1/usuario/renova:
     post:
       summary: Renova token
+      security:
+        - bearerAuth: []
       description: Renova a validade de um token de validação.
       tags: 
          - login
